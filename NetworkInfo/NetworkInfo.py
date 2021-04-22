@@ -11,11 +11,14 @@ def cidr_to_netmask(cidr_txt):
             str( (0x000000ff & mask)))
 
 def macro_handler(event, context):
-    print(event)
-    print(context)
- 
+    cidr = event['params']['CIDR']
+
     return {
         "requestId" : event["requestId"]
     ,   "status" : "success"
-    ,   "fragment": event['fragment']
+    ,   "fragment": {
+          "CIDR" : cidr,
+          "ip-range" : cidr_to_range(cidr),
+          "netmask"  : cidr_to_netmask(cidr)
+        }
     }   
