@@ -2,7 +2,7 @@
     "AWSTemplateFormatVersion": "2010-09-09",
     "Description": "Macros and other utility components for use by other CheapSeats stacks",
     "Resources": {
-        "BasicLambdaRole": {
+        "MacroLambdaRole": {
             "Type": "AWS::IAM::Role",
             "Properties": {
                 "AssumeRolePolicyDocument": {
@@ -36,7 +36,7 @@
                 "Runtime": "python3.6",
                 "Role": {
                     "Fn::GetAtt": [
-                        "BasicLambdaRole",
+                        "MacroLambdaRole",
                         "Arn"
                     ]
                 }
@@ -99,18 +99,6 @@
         }
     },
     "Outputs": {
-        "BasicLambda": {
-            "Description": "IAM Role for Basic Execution-Only Lambda",
-            "Value": {
-                "Fn::GetAtt": [
-                    "BasicLambdaRole",
-                    "Arn"
-                ]
-            },
-            "Export": {
-                "Name": "CheapSeats-Roles-BasicLambda"
-            }
-        },
         "MacroPolicy" : {
             "Description": "IAM Policy for using Cloudformation Macros",
             "Value" : { "Ref": "MacroIAMPolicy"},
