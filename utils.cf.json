@@ -1,5 +1,6 @@
 {
-    "Parameters": {},
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "Macros and other utility components for use by other CheapSeats stacks",
     "Resources": {
         "BasicLambdaRole": {
             "Type": "AWS::IAM::Role",
