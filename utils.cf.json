@@ -27,7 +27,7 @@
                 ]
             }
         },
-        "MacroLambda": {
+        "NetworkInfoLambda": {
             "Type": "AWS::Lambda::Function",
             "Properties": {
                 "Code": "./NetworkInfo",
@@ -47,14 +47,14 @@
                 "LogGroupName": "Cheapseats-MacroLogs"
             }
         },
-        "MacroDefinition": {
+        "NetworkInfoMacro": {
             "Type": "AWS::CloudFormation::Macro",
             "Properties": {
                 "Name": "NetworkInfo",
                 "Description": "Utility Macro to derive network information from CIDR Range",
                 "FunctionName": {
                     "Fn::GetAtt": [
-                        "MacroLambda",
+                        "NetworkInfoLambda",
                         "Arn"
                     ]
                 },
@@ -78,7 +78,7 @@
                             "Action": "cloudformation:CreateChangeSet",
                             "Resource": [
                                 {
-                                    "Fn::Sub": "arn:aws:cloudformation:${AWS::Region}:${AWS::AccountId}:transform/${MacroDefinition}"
+                                    "Fn::Sub": "arn:aws:cloudformation:${AWS::Region}:${AWS::AccountId}:transform/${NetworkInfoMacro}"
                                 }
                             ]
                         },
@@ -88,7 +88,7 @@
                             "Action": "lambda:InvokeFunction",
                             "Resource": [
                                 {
-                                    "Fn::GetAtt" : [ "MacroLambda", "Arn"]
+                                    "Fn::GetAtt" : [ "NetworkInfoLambda", "Arn"]
                                 }
                             ]
                         }
