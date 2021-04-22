@@ -83,7 +83,7 @@
                             ]
                         },
                         {
-                            "Sid": "MacroLambdaAccesws",
+                            "Sid": "MacroLambdaAccess",
                             "Effect": "Allow",
                             "Action": "lambda:InvokeFunction",
                             "Resource": [
