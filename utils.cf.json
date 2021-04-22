@@ -81,6 +81,16 @@
                                     "Fn::Sub": "arn:aws:cloudformation:${AWS::Region}:${AWS::AccountId}:transform/${MacroDefinition}"
                                 }
                             ]
+                        },
+                        {
+                            "Sid": "MacroLambdaAccesws",
+                            "Effect": "Allow",
+                            "Action": "lambda:InvokeFunction",
+                            "Resource": [
+                                {
+                                    "Fn::GetAtt" : [ "MacroLambda", "Arn"]
+                                }
+                            ]
                         }
                     ]
                 }
