@@ -109,6 +109,11 @@
             "Export": {
                 "Name": "CheapSeats-Roles-BasicLambda"
             }
+        },
+        "MacroPolicy" : {
+            "Description": "IAM Policy for using Cloudformation Macros",
+            "Value" : { "Ref": "MacroIAMPolicy"},
+            "Export" : { "Name" : "CheapSeats-Policy-MacroAccess" }
         }
     }
 }
