@@ -27,7 +27,6 @@
                 ]
             }
         },
-
         "MacroLambda": {
             "Type": "AWS::Lambda::Function",
             "Properties": {
@@ -42,21 +41,49 @@
                 }
             }
         },
-
-        "MacroLogGroup" : {
-            "Type" : "AWS::Logs::LogGroup",
+        "MacroLogGroup": {
+            "Type": "AWS::Logs::LogGroup",
             "Properties": {
-                "LogGroupName" : "Cheapseats-MacroLogs"
+                "LogGroupName": "Cheapseats-MacroLogs"
             }
         },
-
-        "MacroDefinition" : {
-            "Type" : "AWS::CloudFormation::Macro",
+        "MacroDefinition": {
+            "Type": "AWS::CloudFormation::Macro",
             "Properties": {
-                "Name" : "NetworkInfo",
-                "Description" : "Utility Macro to derive network information from CIDR Range",
-                "FunctionName" : { "Fn::GetAtt" : ["MacroLambda", "Arn"]},
-                "LogGroupName" : {"Ref" : "MacroLogGroup"}
+                "Name": "NetworkInfo",
+                "Description": "Utility Macro to derive network information from CIDR Range",
+                "FunctionName": {
+                    "Fn::GetAtt": [
+                        "MacroLambda",
+                        "Arn"
+                    ]
+                },
+                "LogGroupName": {
+                    "Ref": "MacroLogGroup"
+                }
+            }
+        },
+        "MacroIAMPolicy": {
+            "Type": "AWS::IAM::ManagedPolicy",
+            "Properties": {
+                "ManagedPolicyName": "Cheapseats-UtilsMacroAccess",
+                "Path": "/cheapseats/",
+                "Description": "Grants required permissions to use Cheapseats macros",
+                "PolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Sid": "MacroCFAccess",
+                            "Effect": "Allow",
+                            "Action": "cloudformation:CreateChangeSet",
+                            "Resource": [
+                                {
+                                    "Fn::Sub": "arn:aws:cloudformation:${AWS::Region}:${AWS::AccountId}:transform/${MacroDefinition}"
+                                }
+                            ]
+                        }
+                    ]
+                }
             }
         }
     },
