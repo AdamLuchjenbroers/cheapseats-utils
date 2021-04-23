@@ -28,6 +28,26 @@
                 ]
             }
         },
+        "MacroLambdaPolicy": {
+            "Type": "AWS::IAM::Policy",
+            "Properties": {
+                "PolicyName": "Cheapseats-MacroLambdaRole",
+                "PolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Sid": "MacroCFAccess",
+                            "Effect": "Allow",
+                            "Action": "cloudformation:ListExports",
+                            "Resource": "*"
+                        }
+                    ]
+                },
+                "Roles": [{
+                    "Ref": "MacroLambdaRole"
+                }]
+            }
+        },
         "NetworkInfoLambda": {
             "Type": "AWS::Lambda::Function",
             "Properties": {
@@ -89,7 +109,10 @@
                             "Action": "lambda:InvokeFunction",
                             "Resource": [
                                 {
-                                    "Fn::GetAtt" : [ "NetworkInfoLambda", "Arn"]
+                                    "Fn::GetAtt": [
+                                        "NetworkInfoLambda",
+                                        "Arn"
+                                    ]
                                 }
                             ]
                         }
@@ -99,10 +122,14 @@
         }
     },
     "Outputs": {
-        "MacroPolicy" : {
+        "MacroPolicy": {
             "Description": "IAM Policy for using Cloudformation Macros",
-            "Value" : { "Ref": "MacroIAMPolicy"},
-            "Export" : { "Name" : "CheapSeats-Policy-MacroAccess" }
+            "Value": {
+                "Ref": "MacroIAMPolicy"
+            },
+            "Export": {
+                "Name": "CheapSeats-Policy-MacroAccess"
+            }
         }
     }
 }
