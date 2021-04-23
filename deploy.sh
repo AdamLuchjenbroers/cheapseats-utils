@@ -9,5 +9,5 @@ KMS_S3KEY=`aws kms describe-key --key-id alias/aws/s3 --query 'KeyMetadata.KeyId
 S3_BUCKET=`aws ssm get-parameter --name "/CheapSeats/Env/ConfigBucket" --query "Parameter.Value" | tr -d \"`
 S3_PREFIX=`aws ssm get-parameter --name "/CheapSeats/Env/ConfigBucket/ArtifactPrefix" --query "Parameter.Value" | tr -d \"`
 
-aws cloudformation package --template-file utils.cf.json --s3-bucket ${S3_BUCKET} --s3-prefix ${S3_UTILS}/Utils --kms-key-id $KMS_S3KEY --output-template-file Package/utils.cf.json
+aws cloudformation package --template-file utils.cf.json --s3-bucket ${S3_BUCKET} --s3-prefix ${S3_PREFIX}/Utils --kms-key-id $KMS_S3KEY --output-template-file Package/utils.cf.json
 aws cloudformation deploy --template-file Package/utils.cf.json --stack-name deimos-utils --capabilities CAPABILITY_NAMED_IAM
