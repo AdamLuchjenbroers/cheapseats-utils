@@ -32,19 +32,27 @@ def fetch_stack_export(export_name):
             return row[1]
 
 def macro_handler(event, context):
-    if 'CIDR' in event['params']: 
-        cidr = event['params']['CIDR']
-    elif 'CIDR-export' in event['params']:
-        cidr = fetch_stack_export(event['params']['CIDR-export'])
+    try:
+        if 'CIDR' in event['params']: 
+            cidr = event['params']['CIDR']
+        elif 'CIDR-export' in event['params']:
+            cidr = fetch_stack_export(event['params']['CIDR-export'])
 
-    (subnet, size) = parse_cidr(cidr)
+        (subnet, size) = parse_cidr(cidr)
 
-    return {
-        "requestId" : event["requestId"]
-    ,   "status" : "success"
-    ,   "fragment": {
-          "CIDR" : cidr,
-          "subnet" : subnet,
-          "netmask"  : compute_netmask(size)
+        return {
+            "requestId" : event["requestId"]
+        ,   "status" : "success"
+        ,   "fragment": {
+            "CIDR" : cidr,
+            "subnet" : subnet,
+            "netmask"  : compute_netmask(size)
+            }
         }
-    }
+    except Exception as e:
+        return {
+            "requestId" : event["requestId"]
+        ,   "status" : "failure"
+        ,   "fragment": {}
+        ,   "errorMessage" : str(e)            
+        }
