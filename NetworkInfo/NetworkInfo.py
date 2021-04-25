@@ -3,7 +3,7 @@ import jmespath
 
 cfn = boto3.client('cloudformation')
 
-def parse_cidr(cidr)
+def parse_cidr(cidr):
     (subnet, size) = cidr.split('/')
 
     return (subnet, int(size))
