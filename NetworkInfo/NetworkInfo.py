@@ -15,7 +15,7 @@ def compute_netmask(size):
             str( (0x0000ff00 & mask) >> 8)    + '.' +
             str( (0x000000ff & mask)))
 
-def export_to_cidr(export_name):
+def fetch_stack_export(export_name):
     list = cfn.list_exports()
     
     data = jmespath.search('Exports[*].[Name, Value]', list)
@@ -27,7 +27,7 @@ def macro_handler(event, context):
     if 'CIDR' in event['params']: 
         cidr = event['params']['CIDR']
     elif 'CIDR-export' in event['params']:
-        cidr = export_to_cidr(event['params']['CIDR-export'])
+        cidr = fetch_stack_export(event['params']['CIDR-export'])
 
     (subnet, size) = parse_cidr(cidr)
 
