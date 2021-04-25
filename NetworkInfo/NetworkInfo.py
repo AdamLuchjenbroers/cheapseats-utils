@@ -3,11 +3,8 @@ import jmespath
 
 cfn = boto3.client('cloudformation')
 
-def cidr_to_subnet(cidr):
-    return cidr.split('/')[0]
-
-def cidr_to_netmask(cidr_txt):
-    cidr = int(cidr_txt.split('/')[1])
+def compute_netmask(size):
+    cidr = int(size)
     mask = (0xffffffff >> (32 - cidr)) << (32 - cidr)
     return (str( (0xff000000 & mask) >> 24)   + '.' +
             str( (0x00ff0000 & mask) >> 16)   + '.' +
@@ -28,12 +25,14 @@ def macro_handler(event, context):
     elif 'CIDR-export' in event['params']:
         cidr = export_to_cidr(event['params']['CIDR-export'])
 
+    (subnet, size) = cidr.split('/')
+
     return {
         "requestId" : event["requestId"]
     ,   "status" : "success"
     ,   "fragment": {
           "CIDR" : cidr,
-          "subnet" : cidr_to_subnet(cidr),
-          "netmask"  : cidr_to_netmask(cidr)
+          "subnet" : subnet,
+          "netmask"  : cidr_to_netmask(size)
         }
-    }   
+    }
