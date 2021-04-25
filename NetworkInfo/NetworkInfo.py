@@ -37,6 +37,6 @@ def macro_handler(event, context):
     ,   "fragment": {
           "CIDR" : cidr,
           "subnet" : subnet,
-          "netmask"  : cidr_to_netmask(size)
+          "netmask"  : compute_netmask(size)
         }
     }
