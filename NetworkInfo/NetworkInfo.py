@@ -1,12 +1,20 @@
 import boto3
 import jmespath
+import re
 
 cfn = boto3.client('cloudformation')
 
-def parse_cidr(cidr):
-    (subnet, size) = cidr.split('/')
+ip_pattern = re.compile('(?P<subnet>([0-9]+\.){3}([0-9]+))\/(?P<size>[0-9]+)$')
 
-    return (subnet, int(size))
+def parse_cidr(cidr):
+    ip_info = ip_pattern.search(cidr)
+    if ip_info:
+        subnet = ip_info.group('subnet')
+        size = int(ip_info.group('size'))
+
+        return (subnet, size)
+    else:
+        raise ValueError('Malformed or invalid Subnet CIDR: %s' % cidr)
 
 def compute_netmask(size):
     mask = (0xffffffff >> (32 - size)) << (32 - size)
