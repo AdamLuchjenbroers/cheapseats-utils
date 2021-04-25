@@ -3,7 +3,7 @@ import jmespath
 
 cfn = boto3.client('cloudformation')
 
-def cidr_to_range(cidr):
+def cidr_to_subnet(cidr):
     return cidr.split('/')[0]
 
 def cidr_to_netmask(cidr_txt):
@@ -33,7 +33,7 @@ def macro_handler(event, context):
     ,   "status" : "success"
     ,   "fragment": {
           "CIDR" : cidr,
-          "ip-range" : cidr_to_range(cidr),
+          "subnet" : cidr_to_subnet(cidr),
           "netmask"  : cidr_to_netmask(cidr)
         }
     }   

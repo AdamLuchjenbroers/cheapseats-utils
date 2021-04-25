@@ -13,7 +13,7 @@ The CIDR range is processed and returned as a JSON fragment containing both the 
 ```
 {
     'CIDR' : <CIDR Range>
-    'ip-range' : <Subnet IP Range>
+    'subnet' : <Subnet IP Range>
     'netmask' : <Subnet Netmask>
 }
 ```
