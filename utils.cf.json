@@ -21,7 +21,7 @@
                         }
                     ]
                 },
-                "RoleName": "Cheapseats-BasicLambda",
+                "RoleName": "Cheapseats-MacroLambdaRole",
                 "Path": "/cheapseats/",
                 "ManagedPolicyArns": [
                     "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
@@ -43,9 +43,11 @@
                         }
                     ]
                 },
-                "Roles": [{
-                    "Ref": "MacroLambdaRole"
-                }]
+                "Roles": [
+                    {
+                        "Ref": "MacroLambdaRole"
+                    }
+                ]
             }
         },
         "NetworkInfoLambda": {
@@ -65,7 +67,7 @@
         "MacroLogGroup": {
             "Type": "AWS::Logs::LogGroup",
             "Properties": {
-                "LogGroupName": "Cheapseats-MacroLogs"
+                "LogGroupName": "/Cheapseats/Macros"
             }
         },
         "NetworkInfoMacro": {
@@ -112,6 +114,38 @@
                                     "Fn::GetAtt": [
                                         "NetworkInfoLambda",
                                         "Arn"
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "Sid": "MacroLoggingAccess",
+                            "Effect": "Allow",
+                            "Action": [
+                                "logs:CreateLogGroup",
+                                "logs:CreateLogStream",
+                                "logs:PutLogEvents",
+                                "logs:DescribeLogStreams",
+                                "logs:DescribeLogGroups"
+                            ],
+                            "Resource": [
+                                {
+                                    "Fn::GetAtt": [
+                                        "MacroLogGroup",
+                                        "Arn"
+                                    ]
+                                },
+                                {
+                                    "Fn::Sub": [
+                                        "${LogArn}:*",
+                                        {
+                                            "LogArn": {
+                                                "Fn::GetAtt": [
+                                                    "MacroLogGroup",
+                                                    "Arn"
+                                                ]
+                                            }
+                                        }
                                     ]
                                 }
                             ]
